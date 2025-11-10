@@ -266,7 +266,7 @@ export async function promoteUser(req, res) {
 }
 
 //downgrade user status to user(Admin only)
-export async function promoteUser(req, res) {
+export async function downgradeUser(req, res) {
   try {
     //destructure user id from request body
     const { userId } = req.body;
