@@ -207,7 +207,94 @@ export async function changePassword(req, res) {
       .json({ message: "Internal server error", error: error.message });
   }
 }
- 
-//TODO: implement forgot password 
+
+//TODO: implement forgot password
 
 //list all users(Admin only)
+export async function getAllUsers(req, res) {
+  try {
+    //check and retrieve all users from database
+    const users = await User.find()
+      //retrive certain properties from the user
+      .select("_id email name role createdAt")
+      // remove excess data
+      .lean();
+
+    //send response to the frontend including the users retrieved
+    res.status(200).json({ message: "Users retrieved successfully", users });
+  } catch (error) {
+    //send error message
+    res
+      .status(500)
+      .json({ message: "Unable to retrieve users", error: error.message });
+  }
+}
+
+//upgrade user status to admin(Admin only)
+export async function promoteUser(req, res) {
+  try {
+    //destructure user id from request body
+    const { userId } = req.body;
+    //check and retrieve the user from database using the user id
+    const user = await User.findById(userId);
+    //check if user exists
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+    }
+    //check if user is admin
+    if (user.id === "admin") {
+      res.status(400).json({ message: "User  is already admin" });
+    }
+    //asign admin role
+    user.role = "admin";
+    //save the updated detail
+    await user.save();
+    // send response
+    res
+      .status(200)
+      .json({
+        message: "User upgraded successfully",
+        userDetails: { id: user._id, email: user.email, role: user.role },
+      });
+  } catch (error) {
+    //send error message
+     res
+      .status(500)
+      .json({ message: "Unable to upgrade user", error: error.message });
+  
+  }
+}
+
+//downgrade user status to user(Admin only)
+export async function promoteUser(req, res) {
+  try {
+    //destructure user id from request body
+    const { userId } = req.body;
+    //check and retrieve the user from database using the user id
+    const user = await User.findById(userId);
+    //check if user exists
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+    }
+    //check if user status is already user
+    if (user.id === "user") {
+      return
+    }
+    //asign user role
+    user.role = "user";
+    //save the updated detail
+    await user.save();
+    // send response
+    res
+      .status(200)
+      .json({
+        message: "User upgraded successfully",
+        userDetails: { id: user._id, email: user.email, role: user.role },
+      });
+  } catch (error) {
+    //send error message
+     res
+      .status(500)
+      .json({ message: "Unable to upgrade user", error: error.message });
+  }
+}
