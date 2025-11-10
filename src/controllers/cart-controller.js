@@ -1,6 +1,6 @@
-import Product from "../models/product-model";
-import Cart from "../models/cart-model";
-import calculateTotal from "../helpers/helpers";
+import Product from "../models/product-model.js";
+import Cart from "../models/cart-model.js";
+import calculateTotal from "../helpers/helpers.js";
 
 //add to cart
 export async function addToCart(req, res) {
