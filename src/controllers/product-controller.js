@@ -3,7 +3,15 @@ import Product from "../models/product-model.js";
 //add product
 export async function addProduct(req, res) {
   try {
-    const { name, price, discountPrice, description, quantity } = req.body;
+    const {
+      name,
+      price,
+      discountPrice,
+      description,
+      quantity,
+      category,
+      brand,
+    } = req.body;
     const imagesPath = req.files
       ? req.files.map((image) => `/uploads/${image.filename}`)
       : [];
@@ -13,6 +21,8 @@ export async function addProduct(req, res) {
       discountPrice,
       description,
       quantity,
+      category,
+      brand,
       images: imagesPath,
     });
     const savedProduct = await product.save();
@@ -61,7 +71,15 @@ export async function getProduct(req, res) {
 //update product
 export async function updateProduct(req, res) {
   try {
-    const { name, price, discountPrice, description, quantity } = req.body;
+    const {
+      name,
+      price,
+      discountPrice,
+      description,
+      quantity,
+      category,
+      brand,
+    } = req.body;
     const imagesPath = req.files
       ? req.files.map((image) => `/uploads/${image.filename}`)
       : [];
@@ -74,6 +92,8 @@ export async function updateProduct(req, res) {
           discountPrice,
           description,
           quantity,
+          category,
+          brand,
           images: imagesPath,
         },
       },
@@ -92,15 +112,14 @@ export async function updateProduct(req, res) {
   }
 }
 
-
 //delete product
-export async function deleteProduct(req , res) {
+export async function deleteProduct(req, res) {
   try {
     const deletedProduct = await Product.findByIdAndDelete(req.params.id);
-     if (!deletedProduct) {
+    if (!deletedProduct) {
       return res.status(404).json({ message: "Product not found" });
     }
-    res.status(200).json({message: "Product deleted successfully"})
+    res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
     res
       .status(500)

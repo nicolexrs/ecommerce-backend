@@ -2,7 +2,7 @@
 import express from "express";
 import { body } from "express-validator";
 import {
-    changePassword,
+  changePassword,
   downgradeUser,
   getAllUsers,
   login,
@@ -40,7 +40,7 @@ router.post(
     body("password")
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters long"),
-    body("adminSecret"),
+    body("adminSecret").
     exists(),
   ],
   //registration controller to register the admin
@@ -115,7 +115,7 @@ router.post(
 //downgrade user role
 router.post(
     //route
-    "/users/upgrade",
+    "/users/downgrade",
      //auth middleware
     authenticate,
     //role middleware
@@ -123,3 +123,5 @@ router.post(
     //downgrade user controller
     downgradeUser
 )
+
+export default router;

@@ -1,5 +1,5 @@
 import User from "../models/user-model.js";
-import bcrypt, { hash } from "bcrypt";
+import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import { signToken } from "../helpers/auth-helper.js";
 
@@ -7,7 +7,6 @@ dotenv.config();
 //declare variables
 const adminSecret = process.env.ADMIN_SECRET;
 
-//sign token function
 export async function register(req, res) {
   try {
     //destructure request body
@@ -16,7 +15,7 @@ export async function register(req, res) {
     //check for existing user
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return req.status(409).json({ message: "User already exists" });
+      return res.status(409).json({ message: "User already exists" });
     }
 
     //generate salt

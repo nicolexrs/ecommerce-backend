@@ -5,6 +5,8 @@ import cors from "cors";
 import connectDatabase from "./src/config/database.js";
 import productRoutes from "./src/routes/productRoutes.js";
 import cartRoutes from "./src/routes/cartRoutes.js";
+import authRoutes from "./src/routes/authRoutes.js";
+import checkoutRoutes from "./src/routes/checkoutRoutes.js"
 import {fileURLToPath} from "url";
 import path from "path"; 
 
@@ -19,6 +21,8 @@ server.use(express.json());
 server.use("/api", productRoutes);
 server.use("/api" , cartRoutes);
 server.use("/uploads", express.static(path.join(directoryName, "uploads")));
+server.use("/auth" , authRoutes);
+server.use("/api" , checkoutRoutes)
 
 server.listen(port, () => {
   connectDatabase();
