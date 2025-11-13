@@ -43,9 +43,15 @@ export async function register(req, res) {
     });
 
     //send response
-    return res
-      .status(201)
-      .json({ message: "Registration successful", token: token, user: user });
+    return res.status(201).json({
+      message: "Registration successful",
+      token: token,
+      user: {
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      },
+    });
   } catch (error) {
     //error response
     return res
@@ -105,7 +111,11 @@ export async function registerAdmin(req, res) {
     return res.status(201).json({
       message: "Admin registration successful",
       token: token,
-      user: user,
+      user: {
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      },
     });
   } catch (error) {
     //error response
@@ -151,7 +161,11 @@ export async function login(req, res) {
     return res.status(200).json({
       message: "Login successful",
       token: token,
-      user: user,
+      user: {
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      },
     });
   } catch (error) {
     //error response
@@ -249,18 +263,15 @@ export async function promoteUser(req, res) {
     //save the updated detail
     await user.save();
     // send response
-    res
-      .status(200)
-      .json({
-        message: "User upgraded successfully",
-        userDetails: { id: user._id, email: user.email, role: user.role },
-      });
+    res.status(200).json({
+      message: "User upgraded successfully",
+      userDetails: { id: user._id, email: user.email, role: user.role },
+    });
   } catch (error) {
     //send error message
-     res
+    res
       .status(500)
       .json({ message: "Unable to upgrade user", error: error.message });
-  
   }
 }
 
@@ -277,22 +288,20 @@ export async function downgradeUser(req, res) {
     }
     //check if user status is already user
     if (user.id === "user") {
-      return
+      return;
     }
     //asign user role
     user.role = "user";
     //save the updated detail
     await user.save();
     // send response
-    res
-      .status(200)
-      .json({
-        message: "User upgraded successfully",
-        userDetails: { id: user._id, email: user.email, role: user.role },
-      });
+    res.status(200).json({
+      message: "User upgraded successfully",
+      userDetails: { id: user._id, email: user.email, role: user.role },
+    });
   } catch (error) {
     //send error message
-     res
+    res
       .status(500)
       .json({ message: "Unable to upgrade user", error: error.message });
   }
